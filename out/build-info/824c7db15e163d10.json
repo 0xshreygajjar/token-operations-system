@@ -1,0 +1,1 @@
+{"id":"824c7db15e163d10","source_id_to_path":{"0":"contracts/src/AccessControl.sol","1":"contracts/src/AllowList.sol","2":"contracts/src/ERC20Base.sol","3":"contracts/src/IAllowList.sol","4":"contracts/src/SecurityToken.sol","5":"contracts/test/SecurityToken.t.sol","6":"contracts/test/TestBase.sol"},"language":"Solidity"}

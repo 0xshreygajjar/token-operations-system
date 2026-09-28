@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "requirements": {
+    "TOK-01": {
+      "tests": [
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK01_revokedSenderCannotTransfer",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK01_revokedRecipientCannotReceiveTransfer",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK01_revokedOwnerCannotSendThroughTransferFrom",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK01_revokedRecipientCannotReceiveThroughTransferFrom",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK01_issuanceRequiresEligibleDestination",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK01_redemptionRequiresEligibleSource"
+      ],
+      "status": "covered",
+      "note": "Revocation blocks sender and recipient on transfer/transferFrom; issuance and redemption check their one real wallet."
+    },
+    "TOK-02": {
+      "tests": [
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK02_heldRecipientCannotReceiveTransfer",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK02_heldOwnerCannotSendThroughTransferFrom",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK02_heldRecipientCannotReceiveThroughTransferFrom",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK02_issuanceToHeldWalletRejected",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK02_redemptionFromHeldWalletRejected",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK02_holdAndAllowlistAreIndependent",
+        "contracts/test/SecurityToken.t.sol::test_directTransferHonoursWalletHold"
+      ],
+      "status": "covered",
+      "note": "Holds block both sides of ordinary routes, issuance and redemption; hold and allowlist are independent."
+    },
+    "TOK-03": {
+      "tests": [
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK03_pauseBlocksTransferFrom",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK03_pauseBlocksIssuance",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK03_redemptionAvailableWhilePaused",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK03_recoveryAvailableWhilePaused",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK03_unpauseDoesNotRestoreOtherwiseInvalidOperations",
+        "contracts/test/SecurityToken.t.sol::test_pauseAndUnpauseOrdinaryTransfer"
+      ],
+      "status": "covered",
+      "note": "Pause blocks transfer routes and issuance; redemption and recovery still work; unpause restores only valid moves."
+    },
+    "TOK-04": {
+      "tests": [
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK04_recoversHeldIneligiblePositionAndEmitsEvents",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK04_usedCaseIsRejectedForAnyLaterCall",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK04_onlyAgentMayRecover",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK04_rejectsZeroCaseAndZeroAmount",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK04_rejectsSameSourceAndDestination",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK04_destinationMustBeEligibleAndNotHeld",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK04_failedRecoveryDoesNotConsumeCase"
+      ],
+      "status": "covered",
+      "note": "Role, case, amount, endpoint and destination rules; exact events; failed call leaves the case unused."
+    },
+    "TOK-05": {
+      "tests": [
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK05_holderCannotBurnByTransferToZero",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK05_spenderCannotBurnByTransferFromToZero",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK05_transferFromZeroSourceRejected",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK05_recoveryRejectsZeroEndpoints",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK05_onlyMinterIncreasesAndOnlyAgentDecreasesSupply",
+        "contracts/test/SecurityTokenPolicy.t.sol::testFuzz_TOK05_recoveryPreservesSupply"
+      ],
+      "status": "covered",
+      "note": "No burn through the zero address by holder or spender; supply changes are role-gated; fuzzed recovery keeps supply."
+    },
+    "TOK-06": {
+      "tests": [
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK06_deploymentGrantsOnlyAdminRole",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK06_deploymentRejectsZeroAllowlist",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK06_allowlistReplacementIsAdminOnlyAndNonZero",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK06_roleAdministrationIsAdminOnly",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK06_holdsAndHaltsAreAgentPowers"
+      ],
+      "status": "covered",
+      "note": "Deployer gets only admin; allowlist non-zero and admin-only; role admin is admin-only; holds/halts are agent-only."
+    },
+    "TOK-07": {
+      "tests": [
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK07_rejectedTransferFromDoesNotSpendAllowance",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK07_unlimitedAllowanceDoesNotBypassPolicy",
+        "contracts/test/SecurityTokenPolicy.t.sol::test_TOK07_rejectedOperationsLeaveNoTrace"
+      ],
+      "status": "covered",
+      "note": "Rejected transferFrom keeps allowance; unlimited allowance does not bypass policy; rejections leave no state or events."
+    },
+    "REG-01": {
+      "tests": [
+        "listener/test/register.test.ts::publishes logs only through head minus confirmations",
+        "listener/test/register.test.ts::depth zero publishes the current head immediately",
+        "listener/test/register.test.ts::is a no-op while no block has reached the confirmation depth",
+        "listener/test/register.test.ts::a replaced unfinalized tip never leaves a stale balance",
+        "listener/test/register.test.ts::rejects a negative confirmation depth"
+      ],
+      "status": "covered",
+      "note": "Publishes only through head - confirmations; depth 0 publishes head; no-op before depth; orphaned tip never published; negative depth rejected."
+    },
+    "REG-02": {
+      "tests": [
+        "listener/test/register.test.ts::mint credits, burn debits and transfers move the exact amount",
+        "listener/test/register.test.ts::a fully redeemed holder disappears and the zero address never appears"
+      ],
+      "status": "covered",
+      "note": "Mint credits, burn debits, transfers move the exact amount on both sides; zero address never a holder."
+    },
+    "REG-03": {
+      "tests": [
+        "listener/test/register.test.ts::applies every distinct log emitted by one transaction",
+        "listener/test/register.test.ts::the same txHash and logIndex in different blocks are different logs",
+        "listener/test/register.test.ts::an overlapping re-read by a new instance never applies a log twice"
+      ],
+      "status": "covered",
+      "note": "Distinct logs in one tx all apply; same txHash+logIndex in other blocks apply; overlapping re-read by a new instance applies nothing twice."
+    },
+    "REG-04": {
+      "tests": [
+        "listener/test/register.test.ts::a new instance fills every newly eligible block after the cursor",
+        "listener/test/register.test.ts::restarting with no eligible gap changes nothing and later blocks apply once"
+      ],
+      "status": "covered",
+      "note": "New instance catches up every eligible block after the durable cursor; restart with no gap is a no-op."
+    },
+    "REG-05": {
+      "tests": [
+        "listener/test/register.test.ts::a store failure mid-tick publishes nothing and a retry converges",
+        "listener/test/register.test.ts::a failure writing the cursor rolls back balances and dedup markers",
+        "listener/test/register.test.ts::a chain read failure leaves the register untouched"
+      ],
+      "status": "covered",
+      "note": "Injected store/chain failures publish nothing; retry converges to an uninterrupted run."
+    },
+    "REG-06": {
+      "tests": [
+        "listener/test/register.test.ts::balances above Number.MAX_SAFE_INTEGER stay exact",
+        "listener/test/format.test.ts::matches the specified examples",
+        "listener/test/format.test.ts::is exact above Number.MAX_SAFE_INTEGER",
+        "listener/test/format.test.ts::pads leading fractional zeroes and trims only trailing ones",
+        "listener/test/format.test.ts::never emits an unnecessary decimal point",
+        "listener/test/format.test.ts::keeps one leading minus sign for negatives and renders zero unsigned",
+        "listener/test/format.test.ts::honours decimals other than 18",
+        "listener/test/format.test.ts::rejects invalid decimals"
+      ],
+      "status": "covered",
+      "note": "Listener balances exact above 2^53; formatter examples, padding, trimming, sign, zero, decimals 0/30 and invalid decimals."
+    },
+    "REG-07": {
+      "tests": [
+        "listener/test/register.test.ts::an eligible empty range still advances the cursor",
+        "listener/test/register.test.ts::the cursor tracks the finalized block, never the observed head",
+        "listener/test/register.test.ts::a failed tick cannot advance the cursor"
+      ],
+      "status": "covered",
+      "note": "Empty eligible range advances cursor; cursor tracks finalized block not head; failed tick leaves cursor."
+    }
+  }
+}
